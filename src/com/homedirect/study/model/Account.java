@@ -1,5 +1,7 @@
 package com.homedirect.study.model;
 
+import com.homedirect.study.util.NumberUtils;
+
 public class Account {
 
 	private int accountId;
@@ -9,12 +11,8 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return "Account{" +
-				"accountId=" + accountId +
-				", username='" + username + '\'' +
-				", password='" + password + '\'' +
-				", amount=" + amount +
-				'}';
+		return  "	  ============ Information Account ============== \n" + 
+	" Account Id = " + accountId + "  |  Username = " + username + "  |  Balance = " + NumberUtils.formatAmount(amount) + "$" + "\n";
 	}
 
 	public int getAccountId() {

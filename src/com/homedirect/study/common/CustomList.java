@@ -1,4 +1,4 @@
-package com.homedirect.study.support;
+package com.homedirect.study.common;
 
 public class CustomList<T> {
 
@@ -6,9 +6,9 @@ public class CustomList<T> {
 	private Node<T> last;
 	private int size = 0;
 
-	public void add(T e) {
+	public void add(T ele) {
 		final Node<T> l = last;
-		final Node<T> newNode = new Node<>(e, null);
+		final Node<T> newNode = new Node<>(ele, null);
 		last = newNode;
 		if (l == null)
 			first = newNode;
@@ -26,10 +26,10 @@ public class CustomList<T> {
 	}
 
 	private Node<T> findNode(int index) {
-		Node<T> x = first;
+		Node<T> nodeToFind = first;
 		for (int i = 0; i < index; i++)
-			x = x.next;
-		return x;
+			nodeToFind = nodeToFind.next;
+		return nodeToFind;
 	}
 
 	private static class Node<T> {

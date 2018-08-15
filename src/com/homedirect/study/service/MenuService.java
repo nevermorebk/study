@@ -1,8 +1,8 @@
 package com.homedirect.study.service;
 
-public interface ShowMenu {
+public interface MenuService {
 
-    static void showOption() {
+    public static void showOption() {
 
         System.out.println("$==== Option Account ========$");
         System.out.println("$                            $");
@@ -16,12 +16,23 @@ public interface ShowMenu {
         System.out.println("$============================$");
     }
 
-    static void showMenu() {
+    public static void showMenu() {
         System.out.println("$======= Menu =========$");
         System.out.println("$                      $");
         System.out.println("$     1.Create account $");
         System.out.println("$     2.Sign In        $");
         System.out.println("$     3.Exit           $");
         System.out.println("$======================$");
+    }
+    
+    public static void transactionMenu() {
+    	System.out.println("$===== Menu History =====$");
+        System.out.println("$                        $");
+        System.out.println("$     1.History Deposit  $");
+        System.out.println("$     2.History Withdraw $");
+        System.out.println("$     3.History Transfer $");
+        System.out.println("$     4.History Receive  $");
+        System.out.println("$     5.Exit             $");
+        System.out.println("$========================$");
     }
 }

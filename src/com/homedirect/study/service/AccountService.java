@@ -1,30 +1,30 @@
 package com.homedirect.study.service;
 
 import com.homedirect.study.model.Account;
-import com.homedirect.study.support.CustomList;
 
 public interface AccountService {
 
-    void create(String username, String password);
+	void create(String username, String password);
 
-    Account signIn(String username, String password);
+	Account signIn(String username, String password);
 
-    void changePassword(String oldPassword, String newPassword, Account account);
+	void changePassword(String oldPassword, String newPassword, Account account);
 
-    String getUsername();
+	String getUsername(int count);
+	
+	String createUsername(int count);
 
-    String createUsername();
+	String createPassword(int count);
 
-    String createPassword();
+	String createOldPassword(int count);
 
-    double createAmount();
+	String createNewPassword(int count);
 
-    int getAccountId();
+	double createAmount();
 
-    void showInformation(Account account);
+	int getAccountId();
 
-    Account getAccountById(int accountId);
+	void showInformation(Account account);
 
-    String createNewPassword();
-
+	Account getAccountById(int accountId);
 }
