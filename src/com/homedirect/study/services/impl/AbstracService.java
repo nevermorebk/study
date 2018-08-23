@@ -1,14 +1,14 @@
-package com.homedirect.study.service.impl;
+package com.homedirect.study.services.impl;
 
 import com.homedirect.study.util.ScanUtils;
 
-import static com.homedirect.study.common.ConfigConstant.YES;
+import static com.homedirect.study.commom.ConfigConstant.*;
 
 public class AbstracService {
 
     protected boolean confirm() {
         System.out.println("Do you want to Continue? (Y/N):");
-        String yes = ScanUtils.getScanner();
+        String yes = ScanUtils.enterString();
         return YES.equalsIgnoreCase(yes);
     }
 }

@@ -1,6 +1,6 @@
-package com.homedirect.study.service;
+package com.homedirect.study.services.impl;
 
-public interface MenuService {
+public class MenuServiceImpl {
 
     public static void showOption() {
 

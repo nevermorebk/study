@@ -1,6 +1,5 @@
-package com.homedirect.study.service;
+package com.homedirect.study.services;
 
-import com.homedirect.study.common.Result;
 import com.homedirect.study.model.Account;
 
 public interface PaymentService {
@@ -9,6 +8,6 @@ public interface PaymentService {
 
 	void transfer(Account fromAccount, Account toAccount, double amount);
 
-	int deposit(Account account, double amount);
+	void deposit(Account account, double amount);
 }
 

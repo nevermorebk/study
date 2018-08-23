@@ -1,4 +1,4 @@
-package com.homedirect.study.service;
+package com.homedirect.study.services;
 
 import com.homedirect.study.model.Account;
 
@@ -10,21 +10,24 @@ public interface AccountService {
 
 	void changePassword(String oldPassword, String newPassword, Account account);
 
-	String getUsername(int count);
+	String getUsername();
 	
-	String createUsername(int count);
+	String inputUsername();
 
-	String createPassword(int count);
+	String inputPassword();
 
-	String createOldPassword(int count);
+	String inputOldPassword();
 
-	String createNewPassword(int count);
+	String inputNewPassword();
 
-	double createAmount();
+	double inputAmount();
 
-	int getAccountId();
+	int inputAccountId();
 
 	void showInformation(Account account);
 
 	Account getAccountById(int accountId);
+
+	boolean notEmpty(String username);
+	
 }

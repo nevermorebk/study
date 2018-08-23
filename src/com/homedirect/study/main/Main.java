@@ -1,41 +1,43 @@
 package com.homedirect.study.main;
 
-import com.homedirect.study.common.Result;
 import com.homedirect.study.model.Account;
-import com.homedirect.study.model.Transaction;
-import com.homedirect.study.service.AccountService;
-import com.homedirect.study.service.TransactionService;
-import com.homedirect.study.service.MenuService;
-import com.homedirect.study.service.PaymentService;
-import com.homedirect.study.service.impl.AccountServiceImpl;
-import com.homedirect.study.service.impl.TransactionServiceImpl;
-import com.homedirect.study.service.impl.PaymentServiceImpl;
+import com.homedirect.study.services.AccountService;
+import com.homedirect.study.services.HistoryService;
+import com.homedirect.study.services.PaymentService;
+import com.homedirect.study.services.impl.AccountServiceImpl;
+import com.homedirect.study.services.impl.HistoryServiceImpl;
+import com.homedirect.study.services.impl.MenuServiceImpl;
+import com.homedirect.study.services.impl.PaymentServiceImpl;
+import com.homedirect.study.storage.AccountStorage;
+import com.homedirect.study.storage.TransactionStorage;
 import com.homedirect.study.util.ScanUtils;
 
-import static com.homedirect.study.common.AccountMenuConstant.*;
-import static com.homedirect.study.common.AccountMenuConstant.EXIT;
-import static com.homedirect.study.common.Result.SUCCESS;
-import static com.homedirect.study.common.RootMenuConstants.*;
-import static com.homedirect.study.common.ConfigConstant.*;
+import static com.homedirect.study.commom.AccountMenuConstant.*;
+import static com.homedirect.study.commom.RootMenuConstants.*;
+
+import java.io.IOException;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		AccountService accountService = new AccountServiceImpl();
 		PaymentService paymentService = new PaymentServiceImpl();
-		TransactionService transactionService = new TransactionServiceImpl();
+		HistoryService historyService = new HistoryServiceImpl();
+		AccountStorage accountStorage = new AccountStorage();
 		boolean flag = true;
-		
+
 		do {
-			MenuService.showMenu();
-			String choose = ScanUtils.getScanner();
+			MenuServiceImpl.showMenu();
+			String choose = ScanUtils.enterString();
 			switch (choose) {
 			case CREATE:
-				String username = accountService.getUsername(COUNT);
-				if(username != null && !username.equals("")) {
-					String password = accountService.createPassword(COUNT);
-					if (password != null && !username.equals("")) {
+				String username = accountService.getUsername();
+				if (accountService.notEmpty(username)) {
+					
+					String password = accountService.inputPassword();
+					if (accountService.notEmpty(password)) {
+						
 						accountService.create(username, password);
 						System.out.println(" \n Create Account Successfully! \n");
 						break;
@@ -43,71 +45,71 @@ public class Main {
 					
 					return;
 				}
-				System.out.println("End Program!");
+				
+				System.out.println("You make too many Mistakes!End Program! \n");
 				return;
-			case SIGNIN:
-				Account account = accountService.signIn(accountService.createUsername(COUNT), accountService.createPassword(COUNT));
-				if (account != null) {
-					System.out.println("Sign In Successfully \n");
-					boolean flg;
-					do {
-						MenuService.showOption();
-						flg = true;
-						choose = ScanUtils.getScanner();
-
-						switch (choose) {
-						case DEPOSIT:
-							double amountDeposit = accountService.createAmount();
-							int result = paymentService.deposit(account, amountDeposit);
-							if (result == SUCCESS) {
-								transactionService.createTransaction(account.getAccountId(), null, amountDeposit, NUMBER, Transaction.TransactionType.DEPOSIT);
-							}
-
-							break;
-
-						case WITHDRAWAL:
-							paymentService.withdraw(account, accountService.createAmount());
-							break;
-
-						case TRANSFER:
-							System.out.println("Please enter the recipient's account ID: ");
-							Account toAccount = accountService.getAccountById(accountService.getAccountId());
-							if (toAccount == null || toAccount.getAccountId() == account.getAccountId()) {
-								System.out.println(" \n Account does not exist or Invalid! \n");
-								break;
-								
-							}
-							paymentService.transfer(account, toAccount, accountService.createAmount());
-							break;
-
-						case HISTORY:
-							System.out.println("pick");
-							transactionService.showHistory(account);
-							break;
-
-						case CHANGE_PASSWORD:
-							accountService.changePassword(accountService.createOldPassword(COUNT),
-									accountService.createNewPassword(COUNT), account);
-							break;
-
-						case INFORMATION:
-							accountService.showInformation(account);
-							break;
-
-						case EXIT:
-							System.out.println("See you later!");
-							flg = false;
-						}
-					} while (flg);
-					break;
-					
-				} else {
-					System.out.println("Invalid Username or Password!");
+			case SIGN_IN:
+				Account account = accountService.signIn(accountService.inputUsername(), accountService.inputPassword());
+				
+				if(account == null) {
+					System.out.println("\n Invalid Username or Password! \n");
 					break;
 				}
+				
+				System.out.println("\n Sign In Successfully \n");
+				boolean flg;
+				do {
+					
+					MenuServiceImpl.showOption();
+					flg = true;
+					choose = ScanUtils.enterString();
+
+					switch (choose) {
+					case DEPOSIT:
+						paymentService.deposit(account, accountService.inputAmount());
+						break;
+
+					case WITHDRAWAL:
+						paymentService.withdraw(account, accountService.inputAmount());
+						break;
+
+					case TRANSFER:
+						System.out.println("\n Please enter the recipient's account ID: \n");
+						Account toAccount = accountService.getAccountById(accountService.inputAccountId());
+						if (toAccount == null || toAccount.getAccountId() == account.getAccountId()) {
+							System.out.println(" \n Account does not exist or Invalid! \n");
+							break;
+						}
+
+						paymentService.transfer(account, toAccount, accountService.inputAmount());
+						break;
+
+					case HISTORY:
+						historyService.showHistory(account);
+						break;
+
+					case CHANGE_PASSWORD:
+						accountService.changePassword(accountService.inputOldPassword(),
+								accountService.inputNewPassword(), account);
+						break;
+
+					case INFORMATION:
+						accountService.showInformation(account);
+						break;
+
+					case EXIT:
+						System.out.println("\n See you later! \n");
+						flg = false;
+					}
+					
+//					TransactionStorage.writerFileAccount(accountService.getAccounts());
+
+				} while (flg);
+			
+				break;
 
 			case END_PROGRAM:
-				System.out.println("End program!");
+				System.out.println("\n End program! \n");
 				flag = false;
 			}
 		} while (flag);

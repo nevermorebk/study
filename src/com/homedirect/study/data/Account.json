@@ -1,0 +1,14 @@
+[
+  {
+    "accountId": 1,
+    "username": "pick",
+    "password": "gunny",
+    "amount": 150000
+  },
+  {
+    "accountId": 2,
+    "username": "gara",
+    "password": "pick123",
+    "amount": 50000
+  },
+]

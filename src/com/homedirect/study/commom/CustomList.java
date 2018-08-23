@@ -1,4 +1,4 @@
-package com.homedirect.study.common;
+package com.homedirect.study.commom;
 
 public class CustomList<T> {
 
